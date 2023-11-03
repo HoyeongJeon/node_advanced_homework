@@ -1,0 +1,26 @@
+{
+  "name": "express_crud",
+  "version": "1.0.0",
+  "description": "1. 상품 작성 API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.2",
+    "prettier": "3.0.3"
+  }
+}
