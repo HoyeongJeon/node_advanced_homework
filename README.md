@@ -1,5 +1,7 @@
 # Node.js와 express로 백엔드 서버 만들기
 
+URL : http://13.125.17.84/
+
 1. 수정 및 삭제 API에서 Resource를 구분하기 위해서 어떤 방식으로 요청(Request) 하셨나요? (`param`, `query`, `body`)
 
    - URLParmaeter를 통해 백엔드로 넘어오는 값(e.g 상품 ID)의 경우(GET, DELETE) req.param을 통해 받음

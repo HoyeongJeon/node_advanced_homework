@@ -4,7 +4,7 @@
   "description": "1. 상품 작성 API",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node app.js"
+    "server": "nodemon --exec babel-node app.js"
   },
   "author": "",
   "license": "ISC",
