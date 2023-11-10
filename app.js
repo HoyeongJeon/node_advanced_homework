@@ -18,6 +18,7 @@ app.engine("html", require("ejs").renderFile);
 
 app.use(express.json());
 app.use(logger);
+
 app.use("/api", router);
 
 app.get("/", (req, res) => {

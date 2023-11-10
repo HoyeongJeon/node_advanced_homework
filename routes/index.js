@@ -3,6 +3,7 @@ import Product from "../schemas/products.schema";
 
 const router = express.Router();
 
+// / GET
 router.get("/", (req, res) => {
   return res.render("api.html");
 });
