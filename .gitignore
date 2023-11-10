@@ -3,3 +3,5 @@ package-lock.json
 babel.config.json
 .env
 .prettierrc
+config
+migrations

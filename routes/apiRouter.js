@@ -1,11 +1,15 @@
 import express from "express";
-import Product from "../schemas/products.schema";
+// import Product from "../schemas/products.schema";
+import { Product } from "../models";
+import { resBody } from "./authRouter.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 // / GET
-router.get("/", (req, res) => {
-  return res.render("api.html");
+router.get("/", authMiddleware, async (req, res) => {
+  const products = await Product.findAll();
+  return res.status(200).send({ success: true, data: products });
 });
 
 // 상품 목록 조회 API
