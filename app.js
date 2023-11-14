@@ -1,13 +1,11 @@
 import "dotenv/config";
 import express from "express";
-import connect from "./schemas/index.js";
 import apiRouter from "./routes/apiRouter.js";
 import authRouter from "./routes/authRouter.js";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
 // 몽고디비 연결
-connect();
 const logger = morgan("dev");
 
 const app = express();

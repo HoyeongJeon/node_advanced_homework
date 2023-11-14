@@ -63,13 +63,13 @@ router.post("/login", async (req, res) => {
   }
   const loggedInUserId = existUser.id;
   // 토큰 생성
-  const token = jwt.sign({ loggedInUserId }, process.env.SECRET_KEY, {
-    expiresIn: "12h"
-  });
-  // res.setHeader("Authorization", "Bearer " + token);
 
-  // 임시로 쿠키에 저장
-  res.cookie("Authorization", "Bearer " + token);
+  const token = jwt.sign({ loggedInUserId }, process.env.SECRET_KEY, {
+    expiresIn: "12h" // "12h"
+  });
+  res.setHeader("Authorization", "Bearer " + token); // singular header를 설정할 것이기에 setHeader 사용
+  // res.header("Authorization", `Bearer ${token}`);
+  // res.cookie("Authorization", "Bearer " + token);
 
   return res.status(200).send({ token });
 });
