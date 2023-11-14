@@ -3,7 +3,6 @@ import { resBody } from "../routes/authRouter";
 
 const authMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
-  console.log(req.headers);
   if (!authorization) {
     return res.status(401).send({ ...resBody(false, "로그인 해주세요") });
   }

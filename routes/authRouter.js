@@ -2,6 +2,7 @@ import express from "express";
 import { Op } from "sequelize";
 import { User } from "../models";
 import jwt from "jsonwebtoken";
+import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
@@ -72,6 +73,30 @@ router.post("/login", async (req, res) => {
   // res.cookie("Authorization", "Bearer " + token);
 
   return res.status(200).send({ token });
+});
+
+// 내 프로필
+router.get("/my-profile", authMiddleware, async (req, res) => {
+  const { loggedInUserId } = res.locals;
+  if (!loggedInUserId) {
+    return res.status(401).json({
+      success: false,
+      message: "권한이 없습니다."
+    });
+  }
+
+  const loggedInUser = await User.findByPk(loggedInUserId);
+
+  return res.status(200).json({
+    success: true,
+    user: {
+      id: loggedInUser.id,
+      email: loggedInUser.email,
+      name: loggedInUser.name,
+      createdAt: loggedInUser.createdAt,
+      updatedAt: loggedInUser.updatedAt
+    }
+  });
 });
 
 export default router;
