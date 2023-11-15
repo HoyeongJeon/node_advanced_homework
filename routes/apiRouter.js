@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/products", async (req, res) => {
   let order = "desc";
   // query에서 asc로 지정하는 경우 이외엔 전부 desc(최신순)
-  if (req.query.sort === "asc") {
+  if (req.query.sort.toLowerCase() === "asc") {
     order = req.query.sort;
   }
 
@@ -33,7 +33,7 @@ router.get("/products", async (req, res) => {
   return res.json({ data: filteredProducts });
 });
 
-// 상품 작성 API o
+// 상품 생성 API o
 router.post("/products", authMiddleware, async (req, res) => {
   const {
     body: { title, content }
@@ -57,7 +57,7 @@ router.post("/products", authMiddleware, async (req, res) => {
 });
 
 // 상품 상세 조회 API o
-router.get("/products/:productId", async (req, res) => {
+router.get("/products/:productId(\\d+)", async (req, res) => {
   const {
     params: { productId }
   } = req;
