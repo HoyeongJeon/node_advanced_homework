@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { User } from "../models";
 import jwt from "jsonwebtoken";
 import authMiddleware from "../middlewares/authMiddleware";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -20,8 +21,6 @@ router.post("/signup", async (req, res) => {
   if (!email || !password || !name) {
     return res.status(400).send({ ...resBody(false, "정보가 비어있습니다.") });
   }
-  console.log(User);
-  console.log(email, password, name);
   const duplicatedUsers = await User.findAll({
     where: {
       [Op.or]: [{ email }]
@@ -32,9 +31,10 @@ router.post("/signup", async (req, res) => {
       .status(400)
       .send({ ...resBody(false, "이미 존재하는 아이디입니다.") });
   }
-  // 비밀번호 해쉬하는 알고리즘 넣어야함.
+  // 비밀번호 해쉬
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await User.create({ email, name, password });
+  const user = await User.create({ email, name, password: hashedPassword });
   return res
     .status(201)
     .send({ success: "true", message: "회원가입에 성공했습니다.", data: user });
@@ -57,7 +57,10 @@ router.post("/login", async (req, res) => {
   if (!existUser) {
     return res.status(400).send({ ...resBody(false, "없는 아이디입니다.") });
   }
-  if (password !== existUser.password) {
+
+  // 비밀번호가 틀린 경우
+  const isMatch = await bcrypt.compare(password, existUser.password);
+  if (!isMatch) {
     return res
       .status(400)
       .send({ ...resBody(false, "잘못된 비밀번호입니다.") });
