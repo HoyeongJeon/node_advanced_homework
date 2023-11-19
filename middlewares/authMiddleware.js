@@ -1,5 +1,11 @@
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt, {
+  JsonWebTokenError,
+  NotBeforeError,
+  TokenExpiredError
+} from "jsonwebtoken";
 import { resBody } from "../routes/authRouter";
+
+// Request Header의 Authorization 정보에서 JWT를 가져와서, 인증 된 사용자인지 확인하는 Middleware를 구현합니다.
 
 const authMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
@@ -21,22 +27,35 @@ const authMiddleware = (req, res, next) => {
       tokenCredential,
       process.env.SECRET_KEY
     );
+    // 인증에 성공하는 경우에는 req.locals.user에 인증 된 사용자 정보를 담고, 다음 동작을 진행
     res.locals.loggedInUserId = loggedInUserId;
     next();
   } catch (error) {
+    // JWT의 유효기한이 지난 경우
     if (error instanceof TokenExpiredError) {
       console.error(error);
       return res.status(401).send({
         ...resBody(false, "토큰이 만료되었어요! 다시 로그인해주세요")
       });
     } else if (error instanceof JsonWebTokenError) {
-      console.log("Token verify 실패,유효성 로직 체크 필요.(비밀키)");
+      //JWT 검증(JWT Secret 불일치, 데이터 조작으로 인한 Signature 불일치 등)에 실패한 경우
+      console.error(error);
+      return res.status(401).send({
+        ...resBody(
+          false,
+          "유효하지 않은 시그니처입니다. JWT Secret Key 확인이 필요합니다."
+        )
+      });
+    } else if (error instanceof NotBeforeError) {
       console.error(error);
       return res.status(401).send({
         ...resBody(false, "다시 로그인해주세요")
       });
     } else {
       console.error(error);
+      return res.status(500).send({
+        ...resBody(false, "다시 로그인해주세요")
+      });
     }
   }
 };

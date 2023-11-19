@@ -11,11 +11,6 @@ const logger = morgan("dev");
 const app = express();
 const PORT = 3000;
 
-app.set("views", __dirname + "/views");
-
-app.set("view engine", "ejs");
-app.engine("html", require("ejs").renderFile);
-
 app.use(cookieParser());
 app.use(express.json());
 app.use(logger);
