@@ -4,28 +4,41 @@
   "description": "1. 상품 작성 API",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node app.js"
+    "dev": "nodemon --exec babel-node app.js",
+    "format": "prettier --write *.js **/*.js",
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
+    "test:silent": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --silent --forceExit",
+    "test:coverage": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --coverage --forceExit",
+    "test:unit": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest __tests__/unit --forceExit"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@jest/globals": "^29.7.0",
+    "@prisma/client": "^5.6.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-mysql-session": "^3.0.0",
+    "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.6.3",
-    "sequelize": "^6.34.0"
+    "prisma": "^5.6.0",
+    "sequelize": "^6.34.0",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
     "@babel/core": "^7.23.2",
     "@babel/node": "^7.22.19",
     "@babel/preset-env": "^7.23.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "prettier": "3.0.3",
     "sequelize-cli": "^6.6.2"

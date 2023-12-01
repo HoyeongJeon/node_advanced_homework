@@ -1,6 +1,6 @@
 import express from "express";
-import { Product } from "../models";
-import { User } from "../models";
+import { Product } from "../../models/index.js";
+import { User } from "../../models/index.js";
 import { resBody } from "./authRouter.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 

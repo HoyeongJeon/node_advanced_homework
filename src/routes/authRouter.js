@@ -1,6 +1,6 @@
 import express from "express";
 import { Op } from "sequelize";
-import { User } from "../models";
+import { User } from "../../models";
 import jwt from "jsonwebtoken";
 import authMiddleware from "../middlewares/authMiddleware";
 import bcrypt from "bcrypt";

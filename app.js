@@ -1,25 +1,23 @@
 import "dotenv/config";
 import express from "express";
-import apiRouter from "./routes/apiRouter.js";
-import authRouter from "./routes/authRouter.js";
-import morgan from "morgan";
 import cookieParser from "cookie-parser";
-
-// 몽고디비 연결
-const logger = morgan("dev");
+import logMiddleware from "./src/middlewares/logMiddleware.js";
+import router from "./src/routes/index.js";
 
 const app = express();
 const PORT = 3000;
 
+app.use(logMiddleware);
 app.use(cookieParser());
 app.use(express.json());
-app.use(logger);
 
-app.use("/api", apiRouter);
-app.use("/auth", authRouter);
-app.get("/", (req, res) => {
-  return res.render("index.html");
-});
+app.use("/", router);
+
+// app.use("/api", apiRouter);
+// app.use("/auth", authRouter);
+// app.get("/", (req, res) => {
+//   return res.send("Helo Server Open!");
+// });
 
 app.listen(PORT, () => {
   console.log(`포트 ${PORT} 으로 서버가 열렸습니다.`);
