@@ -1,18 +1,12 @@
-import { where } from "sequelize";
-import { prisma } from "../utils/prisma/index.js";
-import response from "../lib/response.js";
+// import { prisma } from "../utils/prisma/index.js";
 
 export class ApiRepository {
-  //   const filteredProducts = products.map((product) => ({
-  //     id: product.id,
-  //     title: product.title,
-  //     content: product.content,
-  //     author: product.User.name, // 사용자 Table의 JOIN
-  //     status: product.status,
-  //     createdAt: product.createdAt
-  //   }));
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
+
   findAllProducts = async (order) => {
-    const products = await prisma.products.findMany({
+    const products = await this.prisma.products.findMany({
       select: {
         productId: true,
         title: true,
@@ -33,7 +27,7 @@ export class ApiRepository {
   };
 
   postProduct = async (title, content, id) => {
-    const product = await prisma.products.create({
+    const product = await this.prisma.products.create({
       data: {
         UserId: id,
         title,
@@ -86,7 +80,7 @@ export class ApiRepository {
   };
 
   deleteProduct = async (productId) => {
-    const deletedProduct = await prisma.products.delete({
+    const deletedProduct = await this.prisma.products.delete({
       where: {
         productId: +productId
       }

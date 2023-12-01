@@ -1,8 +1,11 @@
 import response from "../lib/response";
-import { ApiService } from "../services/apiService";
+// import { ApiService } from "../services/apiService";
 
 export class ApiController {
-  apiService = new ApiService();
+  constructor(apiService) {
+    this.apiService = apiService;
+  }
+  // apiService = new ApiService();
   getProducts = async (req, res, next) => {
     try {
       let order = "desc";

@@ -1,8 +1,11 @@
-import { ApiRepository } from "../repositories/apiRepository";
+// import { ApiRepository } from "../repositories/apiRepository";
 import response from "../lib/response";
 
 export class ApiService {
-  apiRepository = new ApiRepository();
+  constructor(apiRepository) {
+    this.apiRepository = apiRepository;
+  }
+  // apiRepository = new ApiRepository();
 
   getProducts = async (order) => {
     // 프로덕트 갖고오기 , order는 정렬순서
