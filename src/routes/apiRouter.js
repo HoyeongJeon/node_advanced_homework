@@ -66,144 +66,157 @@ router.post("/products", authMiddleware, apiController.postProduct);
 // });
 
 // 상품 상세 조회 API o
-router.get("/products/:productId(\\d+)", async (req, res) => {
-  const { productId } = req.params;
+router.get("/products/:productId(\\d+)", apiController.getProductById);
 
-  try {
-    const product = await Product.findByPk(productId, {
-      // 테이블 조인
-      include: [{ model: User, attributes: ["name"] }]
-    });
+// router.get("/products/:productId(\\d+)", async (req, res) => {
+//   const { productId } = req.params;
 
-    if (!product) {
-      return res
-        .status(404)
-        .json({ ...resBody(false, "상품 조회에 실패하였습니다.") });
-    }
+//   try {
+//     const product = await Product.findByPk(productId, {
+//       // 테이블 조인
+//       include: [{ model: User, attributes: ["name"] }]
+//     });
 
-    //  상품 ID, 상품명, 작성 내용, 작성자명, 상품 상태, 작성 날
-    return res.status(200).json({
-      success: true,
-      data: {
-        id: product.id,
-        title: product.title,
-        content: product.content,
-        author: product.User.dataValues.name,
-        status: product.status,
-        createdAt: product.createdAt
-      }
-    });
-  } catch (error) {
-    console.error("Error: ", error);
-    return res
-      .status(500)
-      .send({ ...resBody(false, "상품 조회에 실패했습니다.") });
-  }
-});
+//     if (!product) {
+//       return res
+//         .status(404)
+//         .json({ ...resBody(false, "상품 조회에 실패하였습니다.") });
+//     }
+
+//     //  상품 ID, 상품명, 작성 내용, 작성자명, 상품 상태, 작성 날
+//     return res.status(200).json({
+//       success: true,
+//       data: {
+//         id: product.id,
+//         title: product.title,
+//         content: product.content,
+//         author: product.User.dataValues.name,
+//         status: product.status,
+//         createdAt: product.createdAt
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error: ", error);
+//     return res
+//       .status(500)
+//       .send({ ...resBody(false, "상품 조회에 실패했습니다.") });
+//   }
+// });
 
 // 상품 정보 수정 o
+
 router.put(
   "/products/:productId(\\d+)",
-  authMiddleware, // 인증 기능 추가
-  async (req, res) => {
-    const {
-      body: { title, content, status }, // 상품명, 작성 내용, 상품상태
-      params: { productId } // 수정하고 싶은 상품 아이디
-    } = req;
-    const { loggedInUserId } = res.locals;
-
-    if (!title || !content) {
-      return res.status(400).json({
-        ...resBody(false, "데이터 형식이 올바르지 않습니다.")
-      });
-    }
-    // 상품 존재를 확인하는 exists 함수 있는지 확인
-    const product = await Product.findByPk(productId);
-    if (!product) {
-      // 제품 없는 경우
-      return res.status(404).json({
-        ...resBody(false, "상품 조회에 실패하였습니다.")
-      });
-    }
-    // 업로더와 현재 로그인 한 유저가 다른 경우
-    if (product.userId !== loggedInUserId) {
-      return res.status(401).json({
-        ...resBody(false, "상품을 수정할 권한이 존재하지 않습니다.")
-      });
-    }
-
-    try {
-      await Product.update(
-        {
-          title,
-          content,
-          status
-        },
-        {
-          where: { id: productId }
-        }
-      );
-
-      const updatedProduct = await Product.findByPk(productId, {
-        include: [{ model: User, attributes: ["name"] }]
-      });
-
-      return res.status(200).json({
-        ...resBody(true, "상품 정보가 수정되었습니다."),
-        data: {
-          id: updatedProduct.id,
-          title: updatedProduct.title,
-          content: updatedProduct.content,
-          author: updatedProduct.User.dataValues.name,
-          status: updatedProduct.status,
-          createdAt: updatedProduct.createdAt
-        }
-      });
-    } catch (error) {
-      return res.status(500).send({
-        ...resBody(false, "상품 정보 수정에 실패했습니다. 다시 시도해주세요.")
-      });
-    }
-  }
+  authMiddleware,
+  apiController.editProduct
 );
+// router.put(
+//   "/products/:productId(\\d+)",
+//   authMiddleware, // 인증 기능 추가
+//   async (req, res) => {
+//     const {
+//       body: { title, content, status }, // 상품명, 작성 내용, 상품상태
+//       params: { productId } // 수정하고 싶은 상품 아이디
+//     } = req;
+//     const { loggedInUserId } = res.locals;
+
+//     if (!title || !content) {
+//       return res.status(400).json({
+//         ...resBody(false, "데이터 형식이 올바르지 않습니다.")
+//       });
+//     }
+//     // 상품 존재를 확인하는 exists 함수 있는지 확인
+//     const product = await Product.findByPk(productId);
+//     if (!product) {
+//       // 제품 없는 경우
+//       return res.status(404).json({
+//         ...resBody(false, "상품 조회에 실패하였습니다.")
+//       });
+//     }
+//     // 업로더와 현재 로그인 한 유저가 다른 경우
+//     if (product.userId !== loggedInUserId) {
+//       return res.status(401).json({
+//         ...resBody(false, "상품을 수정할 권한이 존재하지 않습니다.")
+//       });
+//     }
+
+//     try {
+//       await Product.update(
+//         {
+//           title,
+//           content,
+//           status
+//         },
+//         {
+//           where: { id: productId }
+//         }
+//       );
+
+//       const updatedProduct = await Product.findByPk(productId, {
+//         include: [{ model: User, attributes: ["name"] }]
+//       });
+
+//       return res.status(200).json({
+//         ...resBody(true, "상품 정보가 수정되었습니다."),
+//         data: {
+//           id: updatedProduct.id,
+//           title: updatedProduct.title,
+//           content: updatedProduct.content,
+//           author: updatedProduct.User.dataValues.name,
+//           status: updatedProduct.status,
+//           createdAt: updatedProduct.createdAt
+//         }
+//       });
+//     } catch (error) {
+//       return res.status(500).send({
+//         ...resBody(false, "상품 정보 수정에 실패했습니다. 다시 시도해주세요.")
+//       });
+//     }
+//   }
+// );
 
 // 상품 삭제 API
 router.delete(
   "/products/:productId(\\d+)",
-  authMiddleware, // 인증 기능 추가
-  async (req, res) => {
-    const {
-      params: { productId }
-    } = req;
-    const { loggedInUserId } = res.locals;
-
-    const product = await Product.findByPk(productId);
-    if (!product) {
-      // 선택한 상품이 존재하지 않을 경우,
-      return res.status(404).json({
-        ...resBody(false, "상품 조회에 실패하였습니다.")
-      });
-    }
-
-    // 로그인 유저와 업로드 유저가 다른 경우
-    if (product.userId !== loggedInUserId) {
-      return res.status(401).json({
-        ...resBody(false, "상품을 삭제할 권한이 존재하지 않습니다.")
-      });
-    }
-
-    try {
-      await product.destroy();
-      return res.status(200).json({
-        ...resBody(true, "상품이 삭제되었습니다.")
-      });
-    } catch (error) {
-      console.error("ERROR", error);
-      return res.status(500).json({
-        ...resBody(false, "상품 삭제에 실패했습니다.")
-      });
-    }
-  }
+  authMiddleware,
+  apiController.deleteProduct
 );
+// router.delete(
+//   "/products/:productId(\\d+)",
+//   authMiddleware, // 인증 기능 추가
+//   async (req, res) => {
+//     const {
+//       params: { productId }
+//     } = req;
+//     const { loggedInUserId } = res.locals;
+
+//     const product = await Product.findByPk(productId);
+//     if (!product) {
+//       // 선택한 상품이 존재하지 않을 경우,
+//       return res.status(404).json({
+//         ...resBody(false, "상품 조회에 실패하였습니다.")
+//       });
+//     }
+
+//     // 로그인 유저와 업로드 유저가 다른 경우
+//     if (product.userId !== loggedInUserId) {
+//       return res.status(401).json({
+//         ...resBody(false, "상품을 삭제할 권한이 존재하지 않습니다.")
+//       });
+//     }
+
+//     try {
+//       await product.destroy();
+//       return res.status(200).json({
+//         ...resBody(true, "상품이 삭제되었습니다.")
+//       });
+//     } catch (error) {
+//       console.error("ERROR", error);
+//       return res.status(500).json({
+//         ...resBody(false, "상품 삭제에 실패했습니다.")
+//       });
+//     }
+//   }
+// );
 
 export default router;

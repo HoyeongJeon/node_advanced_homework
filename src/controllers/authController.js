@@ -21,6 +21,7 @@ export class AuthController {
         password
       );
 
+      // 이거 없어도 될 듯?
       if (responseFromService.status >= 400) {
         return res.status(responseFromService.status).json(responseFromService);
       }
@@ -63,6 +64,18 @@ export class AuthController {
         .json(
           response({ status: 200, message: "", data: req.session.loggedInUser })
         );
+    } catch (error) {
+      next(error);
+    }
+  };
+  logout = (req, res, next) => {
+    try {
+      req.session.user = null;
+      res.locals.loggedInUser = req.session.user;
+      req.session.loggedIn = false;
+      return res
+        .status(200)
+        .json(response({ status: 200, message: "로그아웃 됐습니다." }));
     } catch (error) {
       next(error);
     }

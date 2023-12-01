@@ -1,4 +1,6 @@
+import { where } from "sequelize";
 import { prisma } from "../utils/prisma/index.js";
+import response from "../lib/response.js";
 
 export class ApiRepository {
   //   const filteredProducts = products.map((product) => ({
@@ -39,5 +41,57 @@ export class ApiRepository {
       }
     });
     return product;
+  };
+
+  getProductById = async (productId) => {
+    const product = await prisma.products.findFirst({
+      where: {
+        productId: +productId
+      },
+      select: {
+        productId: true,
+        title: true,
+        content: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        User: {
+          select: {
+            userId: true,
+            name: true
+          }
+        }
+      }
+    });
+    if (!product) {
+      return false;
+    }
+
+    return product;
+  };
+
+  editProduct = async (productId, title, content, status) => {
+    const updatedProduct = await prisma.products.update({
+      where: {
+        productId: +productId
+      },
+      data: {
+        title,
+        content,
+        status
+      }
+    });
+
+    return updatedProduct;
+  };
+
+  deleteProduct = async (productId) => {
+    const deletedProduct = await prisma.products.delete({
+      where: {
+        productId: +productId
+      }
+    });
+
+    return deletedProduct;
   };
 }
