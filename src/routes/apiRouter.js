@@ -1,65 +1,69 @@
 import express from "express";
 import { Product } from "../../models/index.js";
 import { User } from "../../models/index.js";
-import { resBody } from "./authRouter.js";
+import { resBody } from "../utils/resBody.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
+import { ApiController } from "../controllers/apiController.js";
 
 const router = express.Router();
 
+const apiController = new ApiController();
 // 상품 목록 조회 API (기능 구현 완)
-router.get("/products", async (req, res) => {
-  // QueryString으로 sort 항목을 받아서 정렬 방식을 결정
-  // query에서 asc로 지정하는 경우 이외엔 전부 desc(최신순) , 대소문자 구분 X
+router.get("/products", apiController.getProducts);
+// router.get("/products", async (req, res) => {
+//   // QueryString으로 sort 항목을 받아서 정렬 방식을 결정
+//   // query에서 asc로 지정하는 경우 이외엔 전부 desc(최신순) , 대소문자 구분 X
 
-  let order = "desc";
-  if (req.query.sort === undefined) {
-    order = "desc";
-  } else {
-    if (req.query.sort.toLowerCase() === "asc") {
-      order = req.query.sort;
-    }
-  }
+//   let order = "desc";
+//   if (req.query.sort === undefined) {
+//     order = "desc";
+//   } else {
+//     if (req.query.sort.toLowerCase() === "asc") {
+//       order = req.query.sort;
+//     }
+//   }
 
-  const products = await Product.findAll({
-    include: [{ model: User, attributes: ["name"] }],
-    order: [["createdAt", order]]
-  });
-  // 상품 ID, 상품명, 작성 내용, 작성자명, 상품 상태, 작성 날짜 조회
-  const filteredProducts = products.map((product) => ({
-    id: product.id,
-    title: product.title,
-    content: product.content,
-    author: product.User.name, // 사용자 Table의 JOIN
-    status: product.status,
-    createdAt: product.createdAt
-  }));
+//   const products = await Product.findAll({
+//     include: [{ model: User, attributes: ["name"] }],
+//     order: [["createdAt", order]]
+//   });
+//   // 상품 ID, 상품명, 작성 내용, 작성자명, 상품 상태, 작성 날짜 조회
+//   const filteredProducts = products.map((product) => ({
+//     id: product.id,
+//     title: product.title,
+//     content: product.content,
+//     author: product.User.name, // 사용자 Table의 JOIN
+//     status: product.status,
+//     createdAt: product.createdAt
+//   }));
 
-  return res.status(200).send({ data: filteredProducts });
-});
+//   return res.status(200).send({ data: filteredProducts });
+// });
 
 // 상품 생성 API o
-router.post("/products", authMiddleware, async (req, res) => {
-  const {
-    title,
-    content // 상품명, 작성 내용
-  } = req.body;
-  const { loggedInUserId: userId } = res.locals;
-  if (!title || !content) {
-    return res.status(400).json({
-      ...resBody(false, "데이터 형식이 올바르지 않습니다.")
-    });
-  }
-  try {
-    await Product.create({ title, content, userId });
-    return res
-      .status(201)
-      .json({ ...resBody(true, "판매 상품을 등록하였습니다.") });
-  } catch (error) {
-    return res.send(500).json({
-      ...resBody(false, "판매 상품 등록에 실패하였습니다.")
-    });
-  }
-});
+router.post("/products", authMiddleware, apiController.postProduct);
+// router.post("/products", authMiddleware, async (req, res) => {
+//   const {
+//     title,
+//     content // 상품명, 작성 내용
+//   } = req.body;
+//   const { loggedInUserId: userId } = res.locals;
+//   if (!title || !content) {
+//     return res.status(400).json({
+//       ...resBody(false, "데이터 형식이 올바르지 않습니다.")
+//     });
+//   }
+//   try {
+//     await Product.create({ title, content, userId });
+//     return res
+//       .status(201)
+//       .json({ ...resBody(true, "판매 상품을 등록하였습니다.") });
+//   } catch (error) {
+//     return res.send(500).json({
+//       ...resBody(false, "판매 상품 등록에 실패하였습니다.")
+//     });
+//   }
+// });
 
 // 상품 상세 조회 API o
 router.get("/products/:productId(\\d+)", async (req, res) => {

@@ -1,13 +1,15 @@
 // 회원가입 유효성 검사를 위한 미들웨어
 
 import { check, validationResult } from "express-validator";
-import { resBody } from "../routes/authRouter";
+import response from "../lib/response";
 const validationMiddleware = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     next();
   } else {
-    return res.status(403).json({ success: false, errors: errors.array() });
+    return res
+      .status(403)
+      .json(response(403, "회원가입 유효성 검사 통과 실패", errors.array()));
   }
 };
 
