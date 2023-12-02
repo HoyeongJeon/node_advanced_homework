@@ -1,8 +1,11 @@
 import response from "../lib/response";
-import { AuthService } from "../services/authService";
+// import { AuthService } from "../services/authService";
 
 export class AuthController {
-  authService = new AuthService();
+  // authService = new AuthService();
+  constructor(authService) {
+    this.authService = authService;
+  }
   signup = async (req, res, next) => {
     try {
       const { email, name, password, passwordCheck } = req.body;

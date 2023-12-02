@@ -3,5 +3,3 @@
 ---
 
 환경변수는 `.env.default`를 참고할 것
-
-auth 부분 DI 안함

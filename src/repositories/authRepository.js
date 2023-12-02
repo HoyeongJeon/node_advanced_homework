@@ -1,8 +1,11 @@
-import { prisma } from "../utils/prisma/index.js";
+// import { prisma } from "../utils/prisma/index.js";
 
 export class AuthRepository {
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
   signup = async (email, name, password) => {
-    const signup = await prisma.users.create({
+    const signup = await this.prisma.users.create({
       data: {
         email,
         name,
@@ -18,7 +21,7 @@ export class AuthRepository {
     };
   };
   findByEmail = async (email) => {
-    const user = await prisma.users.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: {
         email
       }

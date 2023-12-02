@@ -1,9 +1,12 @@
-import { AuthRepository } from "../repositories/authRepository";
+// import { AuthRepository } from "../repositories/authRepository";
 import response from "../lib/response";
 import bcrypt from "bcrypt";
 import { PASSWORD_HASH_SALT } from "../constants/securityConstant";
 export class AuthService {
-  authRepository = new AuthRepository();
+  // authRepository = new AuthRepository();
+  constructor(authRepository) {
+    this.authRepository = authRepository;
+  }
   signup = async (email, name, password) => {
     const duplicatedId = await this.authRepository.findByEmail(email);
     if (duplicatedId) {

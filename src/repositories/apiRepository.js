@@ -38,7 +38,7 @@ export class ApiRepository {
   };
 
   getProductById = async (productId) => {
-    const product = await prisma.products.findFirst({
+    const product = await this.prisma.products.findFirst({
       where: {
         productId: +productId
       },
@@ -65,7 +65,7 @@ export class ApiRepository {
   };
 
   editProduct = async (productId, title, content, status) => {
-    const updatedProduct = await prisma.products.update({
+    const updatedProduct = await this.prisma.products.update({
       where: {
         productId: +productId
       },
