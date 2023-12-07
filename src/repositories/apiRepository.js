@@ -1,5 +1,3 @@
-// import { prisma } from "../utils/prisma/index.js";
-
 export class ApiRepository {
   constructor(prisma) {
     this.prisma = prisma;
@@ -22,7 +20,6 @@ export class ApiRepository {
       }
     });
 
-    // 여기 프로덕트 데이터 포맷팅 가능한지 확인. User{name} 을 author 하나로
     return products;
   };
 

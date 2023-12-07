@@ -11,24 +11,14 @@ const apiController = new ApiController(apiService);
 
 const router = express.Router();
 
-// 상품 목록 조회 API (기능 구현 완)
 router.get("/products", apiController.getProducts);
-
-// 상품 생성 API o
 router.post("/products", authMiddleware, apiController.postProduct);
-
-// 상품 상세 조회 API o
 router.get("/products/:productId(\\d+)", apiController.getProductById);
-
-// 상품 정보 수정 o
-
 router.put(
   "/products/:productId(\\d+)",
   authMiddleware,
   apiController.editProduct
 );
-
-// 상품 삭제 API
 router.delete(
   "/products/:productId(\\d+)",
   authMiddleware,

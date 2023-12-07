@@ -1,5 +1,4 @@
-import response from "../lib/response";
-// import { AuthService } from "../services/authService";
+import response from "../lib/response.js";
 
 export class AuthController {
   // authService = new AuthService();
