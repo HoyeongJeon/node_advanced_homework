@@ -1,7 +1,7 @@
 // import { AuthRepository } from "../repositories/authRepository";
-import response from "../lib/response";
+import response from "../lib/response.js";
 import bcrypt from "bcrypt";
-import { PASSWORD_HASH_SALT } from "../constants/securityConstant";
+import { PASSWORD_HASH_SALT } from "../constants/securityConstant.js";
 export class AuthService {
   // authRepository = new AuthRepository();
   constructor(authRepository) {
@@ -36,18 +36,28 @@ export class AuthService {
     if (!isMatch) {
       return response({ status: 400, message: "잘못된 비밀번호입니다." });
     }
-    const loggedInUser = {
-      id: duplicatedId.userId,
-      name: duplicatedId.name,
-      email: duplicatedId.email,
-      createdAt: duplicatedId.createdAt,
-      updatedAt: duplicatedId.updatedAt
-    };
 
+    const isCorrectUser = duplicatedId && isMatch;
+
+    if (!isCorrectUser) {
+      return response({
+        status: 400,
+        message: "일치하는 인증정보가 없습니다."
+      });
+    }
+
+    // const loggedInUser = {
+    //   id: duplicatedId.userId,
+    //   name: duplicatedId.name,
+    //   email: duplicatedId.email,
+    //   createdAt: duplicatedId.createdAt,
+    //   updatedAt: duplicatedId.updatedAt
+    // };
+    delete duplicatedId.password;
     return response({
       status: 200,
       message: "로그인에 성공했습니다.",
-      data: loggedInUser
+      data: duplicatedId
     });
   };
 }

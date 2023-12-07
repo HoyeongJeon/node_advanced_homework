@@ -1,5 +1,3 @@
-// import { prisma } from "../utils/prisma/index.js";
-
 export class AuthRepository {
   constructor(prisma) {
     this.prisma = prisma;
@@ -12,12 +10,9 @@ export class AuthRepository {
         password
       }
     });
+    delete signup.password;
     return {
-      userId: signup.userId,
-      email: signup.email,
-      name: signup.name,
-      createdAt: signup.createdAt,
-      updatedAt: signup.updatedAt
+      signup
     };
   };
   findByEmail = async (email) => {

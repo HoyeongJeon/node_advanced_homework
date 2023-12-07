@@ -1,11 +1,9 @@
 import response from "../lib/response";
-// import { ApiService } from "../services/apiService";
 
 export class ApiController {
   constructor(apiService) {
     this.apiService = apiService;
   }
-  // apiService = new ApiService();
   getProducts = async (req, res, next) => {
     try {
       let order = "desc";
@@ -30,12 +28,6 @@ export class ApiController {
       const responseFromService =
         await this.apiService.getProductById(productId);
 
-      // if (responseFromService.status >= 400) {
-      //   return res
-      //     .status(responseFromService.status)
-      //     .json(responseFromService);
-      // }
-
       return res.status(responseFromService.status).json(responseFromService);
     } catch (error) {
       next(error);
@@ -49,9 +41,10 @@ export class ApiController {
         content // 상품명, 작성 내용
       } = req.body;
       const {
-        loggedInUser: { id }
+        loggedInUser: { userId }
       } = res.locals;
-
+      console.log("logged In User Id");
+      console.log(res.locals);
       if (!title || !content) {
         return res.status(400).json(
           response({
@@ -63,7 +56,7 @@ export class ApiController {
       const responseFromService = await this.apiService.postProduct(
         title,
         content,
-        id
+        userId
       );
 
       return res.status(responseFromService.status).json(responseFromService);
@@ -92,7 +85,6 @@ export class ApiController {
         title,
         content,
         status,
-
         loggedInUser
       );
 

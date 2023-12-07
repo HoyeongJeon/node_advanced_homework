@@ -1,9 +1,9 @@
 import express from "express";
-import authMiddleware from "../middlewares/authMiddleware";
-import validationCheck from "../middlewares/validationMiddleware";
-import { AuthController } from "../controllers/authController";
-import { AuthRepository } from "../repositories/authRepository";
-import { AuthService } from "../services/authService";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import validationCheck from "../middlewares/validationMiddleware.js";
+import { AuthController } from "../controllers/authController.js";
+import { AuthRepository } from "../repositories/authRepository.js";
+import { AuthService } from "../services/authService.js";
 import { prisma } from "../utils/prisma";
 const router = express.Router();
 

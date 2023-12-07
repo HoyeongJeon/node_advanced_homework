@@ -5,11 +5,11 @@ import { ApiRepository } from "../repositories/apiRepository.js";
 import { prisma } from "../utils/prisma/index.js";
 import { ApiService } from "../services/apiService.js";
 
-const router = express.Router();
-
 const apiRepository = new ApiRepository(prisma);
 const apiService = new ApiService(apiRepository);
 const apiController = new ApiController(apiService);
+
+const router = express.Router();
 
 // 상품 목록 조회 API (기능 구현 완)
 router.get("/products", apiController.getProducts);

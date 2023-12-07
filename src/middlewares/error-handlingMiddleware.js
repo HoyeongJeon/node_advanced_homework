@@ -1,4 +1,4 @@
-import response from "../lib/response";
+import response from "../lib/response.js";
 
 export default function (err, req, res, next) {
   // 에러를 출력합니다.

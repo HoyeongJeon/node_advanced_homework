@@ -1,0 +1,30 @@
+@host = http://localhost:3000/api
+
+
+### 상품 목록 조회
+GET {{host}}/products 
+
+### 상품 상세 조회
+GET {{host}}/products/1
+
+### 상품 생성 API
+POST {{host}}/products
+Content-Type: application/json
+
+{
+	"title":"에어팟",
+	"content":"에어팟 프로 샀어요"
+}
+
+### 상품 수정
+PUT {{host}}/products/15
+Content-Type: application/json
+
+{
+	"title":"아이폰",
+	"content":"팔렸어요",
+	"status":"SOLD_OUT"
+}
+
+### 상품 삭제
+DELETE {{host}}/products/15

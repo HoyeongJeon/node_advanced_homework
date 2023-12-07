@@ -1,7 +1,7 @@
 // 회원가입 유효성 검사를 위한 미들웨어
 
 import { check, validationResult } from "express-validator";
-import response from "../lib/response";
+import response from "../lib/response.js";
 const validationMiddleware = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {

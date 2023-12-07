@@ -1,5 +1,5 @@
 // import { ApiRepository } from "../repositories/apiRepository";
-import response from "../lib/response";
+import response from "../lib/response.js";
 
 export class ApiService {
   constructor(apiRepository) {
@@ -37,14 +37,7 @@ export class ApiService {
     });
   };
 
-  editProduct = async (
-    productId,
-    title,
-    content,
-    status,
-
-    loggedInUser
-  ) => {
+  editProduct = async (productId, title, content, status, loggedInUser) => {
     const existProduct = await this.apiRepository.getProductById(productId);
 
     if (!existProduct) {
@@ -54,7 +47,7 @@ export class ApiService {
       });
     }
 
-    if (existProduct.User.userId !== loggedInUser.id) {
+    if (existProduct.User.userId !== loggedInUser.userId) {
       return response({
         status: 401,
         message: "상품을 수정할 권한이 없습니다."
@@ -105,7 +98,7 @@ export class ApiService {
       });
     }
 
-    if (existProduct.User.userId !== loggedInUser.id) {
+    if (existProduct.User.userId !== loggedInUser.userId) {
       return response({
         status: 401,
         message: "상품을 수정할 권한이 없습니다."

@@ -18,7 +18,7 @@ import {
 import { SECRET_KEY } from "./src/constants/securityConstant.js";
 
 const app = express();
-const PORT = 3000 || SERVER_PORT;
+const PORT = SERVER_PORT || 3000;
 
 const MySQLStore = expressMySQLSession(session);
 
@@ -52,11 +52,6 @@ app.use(localsMiddleware);
 
 app.use("/", router);
 
-// app.use("/api", apiRouter);
-// app.use("/auth", authRouter);
-// app.get("/", (req, res) => {
-//   return res.send("Helo Server Open!");
-// });
 app.use(errorHandlingMiddleware);
 app.listen(PORT, () => {
   console.log(`포트 ${PORT} 으로 서버가 열렸습니다.`);
