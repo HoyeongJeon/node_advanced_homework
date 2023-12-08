@@ -6,6 +6,9 @@
 
 ---
 
+URL
+http://sparta-node-alb-1422788954.ap-northeast-2.elb.amazonaws.com/
+
 # 환경변수
 
 (환경변수는 `.env.default`를 참고할 것)
