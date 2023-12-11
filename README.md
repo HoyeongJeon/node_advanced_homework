@@ -5,6 +5,8 @@
 ### 3-layer-architecture로 구조 수정
 
 ---
+URL
+http://sparta-node-alb-1422788954.ap-northeast-2.elb.amazonaws.com/
 
 **재제출 변경사항**
 
@@ -28,15 +30,9 @@ if (req.query.sort.toLowerCase() === "asc") {
 
 리팩토링 후 코드
 
-```Javascript
-// apiController.js/getProducts
-const order = (req.query.sort && req.query.sort.toLowerCase() === "asc") ? "asc": "desc";
-```
+https://github.com/HoyeongJeon/node_advanced_homework/blob/c2b11bf9acd6b4c11e6d446039dc093272880d51/src/controllers/apiController.js#L9-L12
 
 - authController.js 코드에서 주석으로 작성하셨듯이 Line 27 - 29 불필요한 코드 삭제.
-
-URL
-http://sparta-node-alb-1422788954.ap-northeast-2.elb.amazonaws.com/
 
 - 에러 처리 방식 변경
 
@@ -63,23 +59,7 @@ http://sparta-node-alb-1422788954.ap-northeast-2.elb.amazonaws.com/
 
 리팩토링 후 코드
 
-```Javascript
- signup = async (req, res, next) => {
-    try {
-      const { email, name, password, passwordCheck } = req.body;
-      if (password !== passwordCheck) {
-        throw new customError(
-          400,
-          "Bad Request",
-          "비밀번호가 일치하지 않습니다."
-        );
-      }
-      ...
-    } catch (error) {
-      next(error);
-    }
-  };
-```
+https://github.com/HoyeongJeon/node_advanced_homework/blob/c2b11bf9acd6b4c11e6d446039dc093272880d51/src/controllers/authController.js#L8-L17
 
 # 환경변수
 
