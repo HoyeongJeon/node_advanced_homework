@@ -23,11 +23,6 @@ export class AuthController {
         password
       );
 
-      // 이거 없어도 될 듯?
-      if (responseFromService.status >= 400) {
-        return res.status(responseFromService.status).json(responseFromService);
-      }
-
       return res.status(responseFromService.status).json(responseFromService);
     } catch (error) {
       next(error);

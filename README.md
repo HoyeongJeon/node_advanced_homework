@@ -6,6 +6,35 @@
 
 ---
 
+**재제출 변경사항**
+
+- 불필요한 console.log 코드는 삭제
+- apiController.js 코드의 getProducts 함수에서 req.query.sort === undefined일 때 order = "desc";를 하는 코드 삭제
+- order 정렬 코드 삼항 연산자를 통해 리팩토링
+
+```Javascript
+// 리팩토링 이전 코드
+// apiController.js/getProducts
+let order = "desc";
+if (req.query.sort === undefined) {
+order = "desc";
+} else {
+if (req.query.sort.toLowerCase() === "asc") {
+    order = req.query.sort;
+}
+}
+```
+
+리팩토링 후 코드
+
+```Javascript
+// 리팩토링 이후 코드
+// apiController.js/getProducts
+const order = (req.query.sort && req.query.sort.toLowerCase() === "asc") ? "asc": "desc";
+```
+
+- authController.js 코드에서 주석으로 작성하셨듯이 Line 27 - 29 불필요한 코드 삭제.
+
 URL
 http://sparta-node-alb-1422788954.ap-northeast-2.elb.amazonaws.com/
 

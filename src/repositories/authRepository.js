@@ -10,7 +10,9 @@ export class AuthRepository {
         password
       }
     });
+
     delete signup.password;
+
     return {
       signup
     };

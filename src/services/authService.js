@@ -46,13 +46,6 @@ export class AuthService {
       });
     }
 
-    // const loggedInUser = {
-    //   id: duplicatedId.userId,
-    //   name: duplicatedId.name,
-    //   email: duplicatedId.email,
-    //   createdAt: duplicatedId.createdAt,
-    //   updatedAt: duplicatedId.updatedAt
-    // };
     delete duplicatedId.password;
     return response({
       status: 200,

@@ -19,7 +19,6 @@ import { SECRET_KEY } from "./src/constants/securityConstant.js";
 
 const app = express();
 const PORT = SERVER_PORT || 3000;
-
 const MySQLStore = expressMySQLSession(session);
 
 const sessionStore = new MySQLStore({
@@ -56,7 +55,3 @@ app.use(errorHandlingMiddleware);
 app.listen(PORT, () => {
   console.log(`포트 ${PORT} 으로 서버가 열렸습니다.`);
 });
-
-// npx sequelize model:generate --name User --attributes email:string,name:string,password:string
-
-// npx sequelize model:generate --name Product --attributes title:string,content:string,author:string,status:string

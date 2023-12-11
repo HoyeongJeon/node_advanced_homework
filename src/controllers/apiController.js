@@ -6,14 +6,11 @@ export class ApiController {
   }
   getProducts = async (req, res, next) => {
     try {
-      let order = "desc";
-      if (req.query.sort === undefined) {
-        order = "desc";
-      } else {
-        if (req.query.sort.toLowerCase() === "asc") {
-          order = req.query.sort;
-        }
-      }
+      const order =
+        req.query.sort && req.query.sort.toLowerCase() === "asc"
+          ? "asc"
+          : "desc";
+
       const responseFromService = await this.apiService.getProducts(order);
       return res.status(responseFromService.status).json(responseFromService);
     } catch (error) {
@@ -43,8 +40,6 @@ export class ApiController {
       const {
         loggedInUser: { userId }
       } = res.locals;
-      console.log("logged In User Id");
-      console.log(res.locals);
       if (!title || !content) {
         return res.status(400).json(
           response({

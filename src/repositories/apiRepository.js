@@ -17,13 +17,16 @@ export class ApiRepository {
             name: true
           }
         }
+      },
+      orderBy: {
+        createdAt: order
       }
     });
 
     return products;
   };
 
-  postProduct = async (title, content, id) => {
+  postProduct = async (title, content, id, order) => {
     const product = await this.prisma.products.create({
       data: {
         UserId: id,
@@ -31,6 +34,7 @@ export class ApiRepository {
         content
       }
     });
+
     return product;
   };
 
