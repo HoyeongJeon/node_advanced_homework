@@ -1,7 +1,7 @@
 import response from "../lib/response.js";
+import { customError } from "../utils/customError/index.js";
 
 export class AuthController {
-  // authService = new AuthService();
   constructor(authService) {
     this.authService = authService;
   }
@@ -9,11 +9,10 @@ export class AuthController {
     try {
       const { email, name, password, passwordCheck } = req.body;
       if (password !== passwordCheck) {
-        return res.status(400).json(
-          response({
-            status: 400,
-            message: "비밀번호가 일치하지 않습니다."
-          })
+        throw new customError(
+          400,
+          "Bad Request",
+          "비밀번호가 일치하지 않습니다."
         );
       }
 
@@ -32,19 +31,14 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
-        return res.status(400).json(
-          response({
-            status: 400,
-            message: "아이디 / 비밀번호를 입력해주세요."
-          })
+        throw new customError(
+          400,
+          "Bad Request",
+          "아이디 / 비밀번호를 입력해주세요."
         );
       }
 
       const responseFromService = await this.authService.login(email, password);
-
-      if (responseFromService.status >= 400) {
-        return res.status(responseFromService.status).json(responseFromService);
-      }
 
       req.session.loggedIn = true;
       req.session.loggedInUser = responseFromService.data;

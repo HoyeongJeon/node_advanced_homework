@@ -8,7 +8,7 @@ GET {{host}}/products?sort=asc
 GET {{host}}/products
 
 ### 상품 상세 조회
-GET {{host}}/products/1
+GET {{host}}/products/100
 
 ### 상품 생성 API
 POST {{host}}/products
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### 상품 수정
-PUT {{host}}/products/15
+PUT {{host}}/products/2
 Content-Type: application/json
 
 {
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### 상품 삭제
-DELETE {{host}}/products/15
+DELETE {{host}}/products/2

@@ -1,11 +1,10 @@
 // import { ApiRepository } from "../repositories/apiRepository";
 import response from "../lib/response.js";
-
+import { customError } from "../utils/customError/index.js";
 export class ApiService {
   constructor(apiRepository) {
     this.apiRepository = apiRepository;
   }
-  // apiRepository = new ApiRepository();
 
   getProducts = async (order) => {
     // 프로덕트 갖고오기 , order는 정렬순서
@@ -24,11 +23,7 @@ export class ApiService {
   getProductById = async (productId) => {
     const product = await this.apiRepository.getProductById(productId);
     if (!product) {
-      return response({
-        status: 404,
-        message: "상품 조회에 실패했습니다.",
-        data: product
-      });
+      throw new customError(404, "Not Found", "상품 조회에 실패했습니다.");
     }
     return response({
       status: 200,
@@ -41,26 +36,15 @@ export class ApiService {
     const existProduct = await this.apiRepository.getProductById(productId);
 
     if (!existProduct) {
-      return response({
-        status: 404,
-        message: "상품 조회에 실패했습니다."
-      });
+      throw new customError(404, "Not Found", "상품 조회에 실패했습니다.");
     }
 
     if (existProduct.User.userId !== loggedInUser.userId) {
-      return response({
-        status: 401,
-        message: "상품을 수정할 권한이 없습니다."
-      });
-    }
-
-    let statusCheck = ["FOR_SALE", "SOLD_OUT"];
-
-    if (!statusCheck.includes(status)) {
-      return response({
-        status: 400,
-        message: "상품의 상태는 FOR_SALE 또는 SOLD_OUT 외 가질 수 없습니다."
-      });
+      throw new customError(
+        401,
+        "Unauthorized",
+        "상품을 수정할 권한이 없습니다."
+      );
     }
 
     if (
@@ -92,17 +76,15 @@ export class ApiService {
     const existProduct = await this.apiRepository.getProductById(productId);
 
     if (!existProduct) {
-      return response({
-        status: 404,
-        message: "상품 조회에 실패했습니다."
-      });
+      throw new customError(404, "Not Found", "상품 조회에 실패했습니다.");
     }
 
     if (existProduct.User.userId !== loggedInUser.userId) {
-      return response({
-        status: 401,
-        message: "상품을 수정할 권한이 없습니다."
-      });
+      throw new customError(
+        401,
+        "Unauthorized",
+        "상품을 삭제할 권한이 없습니다."
+      );
     }
 
     const deletedProduct = await this.apiRepository.deleteProduct(productId);

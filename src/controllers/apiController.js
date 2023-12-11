@@ -1,4 +1,4 @@
-import response from "../lib/response";
+import { customError } from "../utils/customError";
 
 export class ApiController {
   constructor(apiService) {
@@ -24,7 +24,6 @@ export class ApiController {
 
       const responseFromService =
         await this.apiService.getProductById(productId);
-
       return res.status(responseFromService.status).json(responseFromService);
     } catch (error) {
       next(error);
@@ -41,11 +40,10 @@ export class ApiController {
         loggedInUser: { userId }
       } = res.locals;
       if (!title || !content) {
-        return res.status(400).json(
-          response({
-            status: 400,
-            message: "데이터 형식이 올바르지 않습니다."
-          })
+        throw new customError(
+          400,
+          "Bad Request",
+          "데이터 형식이 올바르지 않습니다."
         );
       }
       const responseFromService = await this.apiService.postProduct(
@@ -68,11 +66,19 @@ export class ApiController {
       const { loggedInUser } = res.locals;
 
       if (!title || !content) {
-        return res.status(400).json(
-          response({
-            status: 400,
-            message: "데이터 형식이 올바르지 않습니다."
-          })
+        throw new customError(
+          400,
+          "Bad Request",
+          "데이터 형식이 올바르지 않습니다."
+        );
+      }
+      let statusCheck = ["FOR_SALE", "SOLD_OUT"];
+
+      if (!statusCheck.includes(status)) {
+        throw new customError(
+          400,
+          "Bad Request",
+          "상품의 상태는 FOR_SALE 또는 SOLD_OUT 외 가질 수 없습니다."
         );
       }
       const responseFromService = await this.apiService.editProduct(
