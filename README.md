@@ -8,13 +8,13 @@
 
 **재제출 변경사항**
 
-- service 파일에서 에러 처리
 - 불필요한 console.log 코드는 삭제
 - apiController.js 코드의 getProducts 함수에서 req.query.sort === undefined일 때 order = "desc";를 하는 코드 삭제
 - order 정렬 코드 삼항 연산자를 통해 리팩토링
 
+리팩토링 이전 코드
+
 ```Javascript
-// 리팩토링 이전 코드
 // apiController.js/getProducts
 let order = "desc";
 if (req.query.sort === undefined) {
@@ -29,7 +29,6 @@ if (req.query.sort.toLowerCase() === "asc") {
 리팩토링 후 코드
 
 ```Javascript
-// 리팩토링 이후 코드
 // apiController.js/getProducts
 const order = (req.query.sort && req.query.sort.toLowerCase() === "asc") ? "asc": "desc";
 ```
@@ -38,6 +37,49 @@ const order = (req.query.sort && req.query.sort.toLowerCase() === "asc") ? "asc"
 
 URL
 http://sparta-node-alb-1422788954.ap-northeast-2.elb.amazonaws.com/
+
+- 에러 처리 방식 변경
+
+리팩토링 이전 코드
+
+```Javascript
+ signup = async (req, res, next) => {
+    try {
+      const { email, name, password, passwordCheck } = req.body;
+      if (password !== passwordCheck) {
+        return res.status(400).json(
+          response({
+            status: 400,
+            message: "비밀번호가 일치하지 않습니다."
+          })
+        );
+      }
+      ...
+    } catch (error) {
+      next(error);
+    }
+  };
+```
+
+리팩토링 후 코드
+
+```Javascript
+ signup = async (req, res, next) => {
+    try {
+      const { email, name, password, passwordCheck } = req.body;
+      if (password !== passwordCheck) {
+        throw new customError(
+          400,
+          "Bad Request",
+          "비밀번호가 일치하지 않습니다."
+        );
+      }
+      ...
+    } catch (error) {
+      next(error);
+    }
+  };
+```
 
 # 환경변수
 
