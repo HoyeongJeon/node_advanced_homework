@@ -8,6 +8,7 @@
 
 **재제출 변경사항**
 
+- service 파일에서 에러 처리
 - 불필요한 console.log 코드는 삭제
 - apiController.js 코드의 getProducts 함수에서 req.query.sort === undefined일 때 order = "desc";를 하는 코드 삭제
 - order 정렬 코드 삼항 연산자를 통해 리팩토링

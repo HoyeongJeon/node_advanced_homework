@@ -26,7 +26,7 @@ export class ApiRepository {
     return products;
   };
 
-  postProduct = async (title, content, id, order) => {
+  postProduct = async (title, content, id) => {
     const product = await this.prisma.products.create({
       data: {
         UserId: id,
